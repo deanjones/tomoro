@@ -2,7 +2,7 @@
 .*~
 __pycache__
 .venv
-notebooks/
 .python-version
 .vector_db
 .env
+notebooks/.ipynb_checkpoints

@@ -45,6 +45,8 @@ The service can be queried over http, e.g. using curl:
 
 ## Evaluation
 
+The details of these evaluations are in the [notebooks](/notebooks) directory.
+
 ### Evaluation of Candidate Tables Retrieval
 
 #### Overview
@@ -62,7 +64,7 @@ The results below clearly indicate diminishing returns for values of k ~ 60 and 
 ### Evaluation of Table Selection
 
 #### Overview
-Once the system has selected a candidate set of tables for answering a user's question, we need to identify the most likely single table which should be selected in order the answer the user's query. This is evaluted by determining the frequency with which the correct table is selected, from a candidate set which includes the expected answer.
+Once the system has selected a candidate set of tables for answering a user's question, we need to identify the most likely single table which should be selected in order to the answer the user's query. This is evaluted by determining the frequency with which the correct table is selected, from a candidate set which includes the expected answer.
 
 #### Metrics
 Here we are interested in the frequency with which the system selects the correct answer from candidate sets of different sizes, given that the candidate set contains the correct answer. As this is a simple right/wrong scenario, we just measure accuracy as the proportion of correct answers given. In the evaluation of the candidate table retrieval, we noted that for larger values of k, we see diminishing returns in recall, so here we cap the evaluation at k=70.

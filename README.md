@@ -30,6 +30,7 @@ the sqlite DB, but this is quite time-consuming, so a gzipped version is include
 ```
     $ gunzip convfinqa.sqlite.gz
 ```
+
 ## Operation
 
 There is a FastAPI-based REST service which is used to generate answers to user's questions. To start this service:
@@ -39,7 +40,7 @@ There is a FastAPI-based REST service which is used to generate answers to user'
 
 The service can be queried over http, e.g. using curl:
 ```
-    curl -H "Content-Type: application/json" -X POST -d '{"question": "what is the maximum variance during the quarter ended in september 31 , 2005?"}' http://localhost:8000/query/
+    $ curl -H "Content-Type: application/json" -X POST -d '{"question": "what is the maximum variance during the quarter ended in september 31 , 2005?"}' http://localhost:8000/query/
 ```
 
 ## Evaluation
@@ -47,13 +48,16 @@ The service can be queried over http, e.g. using curl:
 ### Evaluation of Candidate Tables Retrieval
 
 #### Overview
-In order to answer a user's question, we need to accurately identify which table contains the relevant information. The first stage is to identify a set of candidate tables, based on the information in the table and the question. There is a parameter 'k' which determines how many tables are returned in the candidate set. Although recall will obviously improve with higher values of k, we typically want this first stage to identify a small candidate set, as a larger candidate set will result in a more expensive, less precise subsequent call to the LLM, when we try to filter the candidate set down to a single table.
+In order to answer a user's question, we need to accurately identify which table contains the relevant information. The first stage is to identify a set of candidate tables, based on the information in the table and the question. There is a parameter 'k' which determines how many tables are returned in the candidate set. Although recall will obviously improve with higher values of k, we typically want this first stage to identify a small candidate set, as a larger candidate set will result in a more expensive, less precise subsequent call to the LLM when we try to filter the candidate set down to a single table.
 
 #### Metrics
 Recall@k (R@k): we need to determine the recall for different values of k (which will inform the runtime choice of a suitable value for k). Note that if a system parameter like the value of k is chosen using data that will also be used to test the system as a whole, this invalidates that evaluation to some extent. In reality, a different dataset should be used to select a value for k.
 
 #### Conclusion
 The results below clearly indicate diminishing returns for values of k ~ 60 and higher. Although it's impossible to properly identify a suitable value for k without understanding the downstream implications on cost and statistical accuracy, this does set an upper bound on the value of k.
+
+![Candidate table retrieval evaluation results](candidate_table_retrieval_evaluation.png)
+
 
 ### Evaluation of Table Selection
 
@@ -66,6 +70,8 @@ Here we are interested in the frequency with which the system selects the correc
 #### Conclusion
 As expected, as the size of the candidate set of tables increases, we see diminishing accuracy as there are more options to choose from. The selection of the correct table is very challenging; there are many tables which, to a human analyst, would appear relevant to a given question, so although the baseline human performance is not known, it is likely to be substantially below 100%. The results shown below are relatively poor, but the algorithm does at least perform about twice as well as random selection (~40% accuracy with 5 candidates, ~20% with 10 candidates), so there is a base signal that can be iterated and improved upon.
 
+![Table selection evaluation results](table_selection_evaluation.png)
+
 ### Evaluation of Overall Performance
 
 #### Overview
@@ -75,5 +81,4 @@ This is the evaluation of the complete system i.e. sending a natural-language qu
 The evaluation is a relatively simple determination of accuracy: does the system give the correct answer or not? In the evaluation, there is some leeway granted to the system's response, given that the expected answers often include additional symbols ('%' for percentages, currency symbols for monetary amounts, etc). We have also tried to account for errors introduced by rounding, by assessing a response to be correct if the expected value and actual answer differ by a small amount. It is possible that this introduces some error in the evaluation process.
 
 #### Conclusions
-The accuracy of the system is determined to be around 15%. This is low, but not surprising given the difficulty of the task and the lack of time for refinement and tuning of the system.
-
+The accuracy of the system was determined to be around 15%. This is low, but not surprising given the difficulty of the task and the lack of time for refinement and tuning of the system.

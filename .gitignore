@@ -1,0 +1,8 @@
+*.*~
+.*~
+__pycache__
+.venv
+notebooks/
+.python-version
+.vector_db
+.env

@@ -21,7 +21,7 @@ tasks are well-suited to LLMs.
 
 - Python 3 (only tested on 3.13)
 - [poetry](https://python-poetry.org/) to manage dependencies ([installation](https://python-poetry.org/docs/#installation)) 
-- OpenAI API access (key should be insertted)
+- OpenAI API access (key should be inserted into the `.env` file)
 
 ## Installation
 

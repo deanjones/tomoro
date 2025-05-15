@@ -29,7 +29,6 @@ def main():
     """
     data_path = get_env_var('DATA_PATH')
     records = read_records(data_path)
-    records = records[2928:]
     print(f'Loaded {len(records)} records from {data_path}')
     llm_type = get_env_var('LLM')
     llm = get_llm(llm_type)
